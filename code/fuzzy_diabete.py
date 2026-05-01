@@ -24,7 +24,7 @@ HIST_PATH = os.path.join(DATA_DIR, "fuzzy_scores_hist.png")
 CM_FUZZY_PATH = os.path.join(DATA_DIR, "confusion_fuzzy.png")
 CM_LR_PATH = os.path.join(DATA_DIR, "confusion_lr.png")
 
-# # --------- preprocess ----------
+# --------- preprocess ----------
 
 def load_and_preprocess():
     cols = ["Pregnancies", "Glucose", "BloodPressure", "SkinThickness", "Insulin","BMI", "DiabetesPedigreeFunction", "Age", "Outcome"]
@@ -231,17 +231,6 @@ def evaluate_and_save():
 
     # histogram and confusion matrices
 
-    def try_open_file(path):
-        try:
-            if os.name == "nt":  # Windows
-                os.startfile(path)
-            elif sys.platform == "darwin":  # macOS
-                subprocess.call(["open", path])
-            else:  # Linux and others
-                subprocess.call(["xdg-open", path])
-        except Exception as e:
-            print("Couldn't open file with OS viewer:", e)
-
     # 1) Histogram
     try:
         fig = plt.figure(figsize=(8,4))
@@ -257,7 +246,6 @@ def evaluate_and_save():
             plt.show(block=True)
         except Exception as e_show:
             print("plt.show() failed for histogram (will try OS viewer):", e_show)
-            try_open_file(HIST_PATH)
         finally:
             plt.close(fig)
             sleep(0.3)  # small pause to allow viewer to open
@@ -282,7 +270,6 @@ def evaluate_and_save():
             plt.show(block=True)
         except Exception as e_show:
             print("plt.show() failed for fuzzy confusion (will try OS viewer):", e_show)
-            try_open_file(CM_FUZZY_PATH)
         finally:
             plt.close(fig)
             sleep(0.3)
@@ -307,7 +294,6 @@ def evaluate_and_save():
             plt.show(block=True)
         except Exception as e_show:
             print("plt.show() failed for LR confusion (will try OS viewer):", e_show)
-            try_open_file(CM_LR_PATH)
         finally:
             plt.close(fig)
             sleep(0.3)
